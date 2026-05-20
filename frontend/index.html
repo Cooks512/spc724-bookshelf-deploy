@@ -24,7 +24,7 @@
     <script>
         // Placeholder for future frontend logic fetching from the API
         //console.log("Dashboard initialized. Ready to fetch data.");         
-        fetch('http://localhost:5000/api/books')
+        fetch('/api/books')
             .then(response => response.json())
             .then(data => {
                 const booksList = document.getElementById('books');
