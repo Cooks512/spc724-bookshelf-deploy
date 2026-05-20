@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookshelf Online</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f7f6; color: #333; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; }
+        ul {list-style: none; padding: 0;}
+        li {padding: 8px; border-bottom: 1px solid #eee; }
+        .error {color: #c0392b;}
+    </style>
+  </head>
+  <body>
+    <div class="card">
+        <h1>Bookshelf Online</h1>
+        <p>Welcome to the online bookshop.</p>
+        <ul id="books">
+            <li><i>Loading...</i></li>
+        </ul>
+    </div>
+    <script>
+        // Placeholder for future frontend logic fetching from the API
+        //console.log("Dashboard initialized. Ready to fetch data.");         
+        fetch('http://localhost:5000/api/books')
+            .then(response => response.json())
+            .then(data => {
+                const booksList = document.getElementById('books');
+                booksList.innerHTML = '';
+                data.forEach(book => {
+                    const li = document.createElement('li');
+                    li.textContent = `${book.title} by ${book.author}`;
+                    booksList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching books:', error);
+                document.getElementById('books').innerHTML = '<li class="error">Error loading books.</li>';
+            });
+    </script>
+  </body>
+</html>

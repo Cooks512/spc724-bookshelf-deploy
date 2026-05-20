@@ -1,0 +1,42 @@
+services:
+  frontend:
+    build: ./frontend
+    container_name: bookstore-frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    restart: unless-stopped
+  
+  # Flask API
+  api:
+    build: ./api
+    container_name: bookstore-api
+    ports: 
+      - "5000:5000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: bookshelf
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  # PostgreSQL db
+  db:
+    image: postgres:15-alpine
+    container_name: bookstore-db
+    environment:
+      POSTGRES_DB: bookshelf
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    restart: unless-stopped
+
+volumes:
+  db_data:
+
